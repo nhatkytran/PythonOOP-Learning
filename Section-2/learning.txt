@@ -1,0 +1,14 @@
+1. Objects and Classes
++++ Objects +++ --> a container
+--> contains data          --> state    --> attributes
+--> contains functionality --> behavior --> methods
++++ Classes +++ --> objects --> contains data & functionality
+--> Classes have behavior --> Callable --> Instances
+--> type of Class is type, type of Instance is Class --> Class is a type
+--> Classes have built-in attributes
+
+2. Class Attributes --> __dict__ --> mappingproxy
+--> getattr(class, attr_name, default) --> class.attr_name
+--> setattr(class, attr_name, attr_value) --> class.attr_name = attr_value
+--> delattr(class, attr_name) --> del class.attr_name
+--> __name__ not stored in __dict__
