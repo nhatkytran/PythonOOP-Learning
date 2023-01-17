@@ -12,3 +12,36 @@
 --> setattr(class, attr_name, attr_value) --> class.attr_name = attr_value
 --> delattr(class, attr_name) --> del class.attr_name
 --> __name__ not stored in __dict__
+
+3. Callable Class Attributes
+--> class.hello()
+
+4. Classes are Callables
+--> instance = class()
+--> user type(instance) instead of instance.__class__
+--> __class__ = str
+--> type(instance) --> class
+--> instance.__class__ --> str
+--> isinstance(instance, class) --> True
+--> isinstance(instance, str) --> True
+--> Do not mess with __class__
+
+5. Data Attributes
+--> class attributes & instance attributes
+--> instance.__dict__ --> class.__dict__
+--> class.__dict__ --> mappingproxy --> immutable
+--> instance.__dict__ --> dict --> mutable
+
+6. Function Attributes
+--> class --> function
+--> instance --> method
+--> method --> instance + function
+--> method --> __self__ & __func__
+--> object.method(args) --> method.__func__(method.__self__, args)
+--> Monkey Patching --> Just means basically modifying the attributes \
+of a class or an object at runtime when the program is running
+--> Monkey patch function for a class --> method to instances of a class
+--> Monkey patch funciton for an instance --> function of that instance
+
+7. Initializing Class Instances
+--> Instantiate a class --> Creation phase & Initialization phase
