@@ -45,3 +45,9 @@ of a class or an object at runtime when the program is running
 
 7. Initializing Class Instances
 --> Instantiate a class --> Creation phase & Initialization phase
+
+8. Creating Attributes at Run-Time
+--> Monkey patch function for a class --> method to instances of a class
+--> Monkey patch function for an instance --> function of that instance
+--> Monkey patch function for an instance and function becomes method of that instance \
+--> from types import MethodType --> MethodType(function, object)
