@@ -51,3 +51,13 @@ of a class or an object at runtime when the program is running
 --> Monkey patch function for an instance --> function of that instance
 --> Monkey patch function for an instance and function becomes method of that instance \
 --> from types import MethodType --> MethodType(function, object)
+
+9. Properties
+< property > = property(fget=< getter >, fset=< setter >)
+--> fget, fset, fdel, doc,...
+--> property is a class (type)
+--> In Python, we don't start with properties right off the bat. \
+We start with bare attributes and in case when we need, \
+we will use properties
+--> Interface --> The way a piece of code interact with another piece of code \
+through functions, methods, etc.
