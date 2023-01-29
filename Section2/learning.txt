@@ -61,3 +61,16 @@ We start with bare attributes and in case when we need, \
 we will use properties
 --> Interface --> The way a piece of code interact with another piece of code \
 through functions, methods, etc.
+
+10. Property Decorators
+x = property()
+x = x.getter(get_x)
+x = x.setter(set_x)
+---
+x = property(fget=< get_x >)
+--> def x as a callable
+--> x = property(x) --> user Decorator instead
+---
+x = property()
+property.__dict__ --> mappingproxy
+x.__dict__ --> AttributeError --> slots
