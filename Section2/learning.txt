@@ -82,3 +82,27 @@ x.__dict__ --> AttributeError --> slots
 13. Some Questions on the Property Class
 --> More behaviors on Property Class --> Descriptors
 --> Class properties --> Metaclass
+
+14. Class and Static Methods
+--> @classmethod
+--> class calls --> bound to class
+--> instance calls --> bound to instance
+--> @staticmethod --> bound to nothing
+
+15. Python Builtin and Standard Types
+--> The types Module \
++ types.ModuleType
++ types.FuncitonType
++ types.GeneratorType
+
+16. Class Body Scope
+--> symbols like __init__ are in the class body scope \
+--> but funcitons themselves are nested in the class's containing scope
+---
+callable
+class Class:
+  __init__ = callable
+---
+--> Comprehension --> funciton --> has its own scope
+
+17. Recap
