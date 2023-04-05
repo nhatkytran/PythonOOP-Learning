@@ -1,0 +1,70 @@
+Polymorphism and Special Methods
+
+1. __str__ v/s __repr__
+
+--> both used for creating a string representation of an object
+
+__repr__ --> used by developer
+--> call repr() function
+
+__str__ --> str() and print()
+--> the order --> str() --> repr()
+
+--> If neither is implemented and since all objects inherit from Object, \
+will use __repr__ defined there instead
+
+2. Arithmetic Operators
+
+3. Rich Comparisions
+
+4. Hasing and Equality
+
+--> Key in a dictionary or Element of a set --> must be hashable
+--> If __eq__ is implemented, __hash__ is implicitly set to None \
+unless __hash__ is implemented
+
+--> By default, when an override is not specified:
++ __hash__ uses id of object
++ __eq__ uses identity comparison (is)
+
+5. Boolean
+
+--> Every object in Python has an associated truth (boolean) value
++ Any non-zero number --> True --> False otherwise
++ An empty collection (len() is 0) --> False --> True otherwise
+
+--> By default, any custom object also has a truth value
++ can override by using __bool__ --> must return True / False
++ __bool__ is not defined --> __len__
++ if neither present, always returns True
+
+--> __bool__ --> __len__ --> True
+
+6. Callables
+
+7. The __del__ method
+
+--> A Class Finalizer
+
+--> The garbage collector destroys objects that are not longer \
+referenced anywhere
+--> hook into that lifecycle event
+--> use __del__ method
+
+--> The __del__ method will get called right before the objects \
+is destroyed by the GC
+--> __del__ is sometimes called the class finalizer
+
+--> If an exception occurs in the __del__ method
++ exception is not raised - it is silenced
++ exception description is sent to stderr
++ main program will not be aware something went wrong during finalization
+
+8. The __format__ method
+
+--> Use format() function to precisely format certain types: numbers, dates,...
+--> Support in custom classes by implementing the __format__ method
+
+format(value, format_spec)
+--> if format_spec is not supplied, it defaults to an empty string
+--> and it will instead use str(value) (which in turn may fall back to repr)
