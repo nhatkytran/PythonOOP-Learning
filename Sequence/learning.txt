@@ -1,0 +1,21 @@
++++ Immutable Sequence Types +++
+
+--> Sequence types are Iterables, but not all Iterables are Sequence Types
+
+--> Return length of the sequence (technically, no need) --> __len__
+--> Given an index, return the element at that index --> __getitem__
+
+__getitem__ --> IndexError
+__getitem__ --> supports for loop
+
+--> Custom Sequence Type
+__len__
+__getitem__
+
+__getiem__ should:
++ return an element for a valid index [0, length - 1]
++ raise an IndexError exception if index is out of bounds
+
+--> Additionally, Custom Sequence Type can support:
++ negative indicies --> i < 0 --> i = length - i
++ slicing --> handle slice objects as argument to __getitem__

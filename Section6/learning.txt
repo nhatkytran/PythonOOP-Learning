@@ -1,0 +1,26 @@
+1. Single Inheritance
+
+--> super()
+--> isinstance v/s type
+--> issubclass
+
+2. The object Class
+
+--> Python makes the class inherit from object implicitly
+--> object is a class (even though it does not use a camel case)
+
+--> Every class is a subclass of object
+--> every object, even functions, modules,...
++ __name__
++ __new__
++ __init__
+...
+
+3. Overriding
+
+4. Extending
+
+5. Delegating to Parent
+
+--> super().method()
+--> method bounds to the instance of that class calls super()
