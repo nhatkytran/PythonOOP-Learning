@@ -1,0 +1,229 @@
+1. Iterating Collections
+
+--> Iterating Sequences --> __getitem__
+
+--> Iteration
++ A bucket of items
++ Get next item
+
+--> Tackle the idea of making collection finite
++ Spectify the size of the collection when we create the instance
++ Raise StopIteration exception if next_ has been called too many times
+
+--> Python's "next" function
+-->  Exhausted problem
+
+2. Iterators
+
+--> The iterator protocol --> a fancy way of saying that our class is going \
+to implement certain functionality that Python can count on
+--> Implement iterator protocol, Python knows class can be iterated over \
+using __next__
+
+--> The iterator protocol
++ __iter__ --> returns class instance itself
++ __next__ --> handing back the next element and raise StopIteration
+
+--> An object that implements these two methods is called an Iterator
+
+3. Iterators and Iterables
+
+--> Iterator is an object that implements
++ __iter__ --> returns the object itself
++ __next__ --> returns the next element
+--> The drawback is that iterators get exhausted
+
+--> The collection is Iterable
+--> but the Iterator is responsible for iterating over the collection
++ The Iterable is created once
++ The Iterator is created every time we need to start a fresh iteration
+
+--> Separate of Concern --> Iterable and Iterator
++ A container that maintains the collection items
++ A separate object, the iterator, used to iterate over the colleciton
+--> This is where the formal definition of a Python Iterable comes in...
+
+--> Iterables
++ Object implements the Iterable protocol
++ The Iterable protocol requires that the object implement a single method __iter__
+__iter__ --> returns a new instance of the iterator object --> used to iterate \
+over the iterable
+
+--> Iterable vs Iterator
+--> An Iterable is an object that implements
+  __iter__ --> returns an Iterator (a new instance)
+--> An Iterator is an object that implements
+  __iter__ --> returns itself (and iterator) (not a new instance)
+  __next__ --> returns the next element
+
+--> So Iterators are themselves Iterables
+  but they are Iterables that become exhausted
+--> Iterables on the other hand never become exhausted
+  because they always return Iterator that is then used to iterate
+
+--> Iterating over an Iterable
++ Calls iter() to obtain an Iterator
++ Starts iterating (using next, StopIteration, etc)
+  using the Iterator returned by iter()
+
+--> First, Python checks Iterable --> __iter__
+--> Second, Python checks Sequence --> __getitem__
+--> Else, Python throws Exception
+
+4. Consuming Iterators Manually
+
+--> Only call __next__ on Iterator
+
+5. Cylic Iterators
+
+1 2 3 4 5 6 7 8 9...
+N S W E
+--> 1N 2S 3W 4E 5N 6S...
+
+--> itertools.cycle('NSWE')
+
+---
+Custom Cyclic Iterator with Sequence
+Custom Cyclic Iterator with Iterable
+itertools.cycle
+---
+
+6. Lazy Iterables
+
+--> Lazy Evaluation
++ Often used in class properties
++ Properties of classes not be populated when the object is created
++ values become known when requested - deferred
+
+--> Application to Iterables
+
+iterable --> Factorial(n)
+  returns factorials of consecutive integer from 0 to n - 1
+  do not pre-compute all the factorials
+  wait until next requests one, then calculate it
+--> This is a form of lazy evaluation
+
+Another application --> Retrieving a list of forum posts
+Posts might be an iterable
+  each call to next returns a list of 5 Posts
+  uses lazy loading
+--> Every time next is called, go back to database and get next 5 posts
+
+--> Application to Iterables --> Infinite Iterables
++ Lazy Evaluation --> Infinite Iterables
+
+--> Very often, the Iterable is nothing more than a very light shell \
+around Iterator
+
+7. Python's Built-in Iterables and Iterators
+
+--> Functions that return Iterables and Iterators
+range(10) --> iterable
+zip(l1, l2) --> iterator
+enumerate(l1) --> iterator
+open('cars.csv') --> iterator
+dictionary .keys() --> iterable
+dictionary .values() --> iterable
+dictionary .items() --> iterable
+
+'__iter__' in dir(<>)
+'__next__' in dir(<>)
+
+print(iter(f) is f)
+
+8. Sorting Iterables
+
+9. The iter() Function?
+
+--> What happens when Python performs an Iteration over an Iterable?
++ First, call the iter() function
++ If __iter__ is implemented, the method is called and Python uses \
+the return Iterator
+
+--> What happends if __iter__ is not implemented?
+
+__iter__ --> StopIteration
+__getitem__ --> IndexError
+
+The iter() Function
++ First, looks for __iter__
++ Second, looks for __getitem__ --> create an Iterator object
+
+--- Testing if an object is iterable
+try:
+  iter(object)
+except TypeError:
+  # not Iterable
+  <code />
+else:
+  # is iterable
+  <code />
+
+--> iter() Function should return Iterator. Otherwise, it throws TypeError
+
+10. Iterating Callables
+
+--> The first form of the iter() function
+iter(iterable) --> iterator for iterable
+  + use iterator protocol, sequence protocol
+  + iter() creates an iterator for us
+--> Notice the the iter() function be able to generate \
+an iterator for us automatically
+
+--> The second form of the iter() function
+iter(callable, sentinel)
+--> return an iterator
+  + call the callable when next() is called
+  + raise StopIteration if the result is equal to the sentinel value
+
+11. Delegating Iterators
+
+def __iter__(self):
+    return iter(self.iterable)
+
+12. Reversed Iteration
+
+reversed(seq) and __reversed__
+
+--> Have a sequnce type --> iterating over the sequence in reverse order \
+is quite simple
+
+for item in seq[::-1]
+--> This works, but wasteful because it makes a copy of the sequence
+
+for i in range(len(seq)):
+    item = seq[len(seq) - i - 1]
+---
+for i in range(len(seq) - 1, -1, -1)
+--> This is more efficient, but the syntax is messy
+
+for item in reversed(seq)
+--> Clearer and more efficient
+--> Create an Iterator that iterate backwards over the sequence
+*** Both __getitem__ and __len__ must be implemented
+
+Iterating an Iterable in reverse
+reversed() on custom Iterable
+  First, __reversed__ function --> return Iterator
+  Second, __getitem__ + __len__
+
+13. Caveat: Using Iterators as Function Arguments
+
+if iter(data) is data:
+    raise ValueError('data cannot be an iterator.')
+#
+if iter(data) is data:
+    data = list(data)
+
+*** Point to Note
+--> Iterator and Iterable
+--> Context Manager as Iterator
+--> Cyclic Iterator
+--> Lazy Iterator
+--> Built-in Iterators, Iterables
+--> Sorting Iterables
+--> iter() Function
+--> Iterating callables --> iter(callable, sentinel)
+--> Delegating Iterators
+--> Reversed Sequence --> reversed(seq) --> Iterator --> (__getitem__ + __len__)
+--> Caveat: Iterators as Function Arguments
