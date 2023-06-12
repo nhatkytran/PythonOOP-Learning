@@ -1,0 +1,52 @@
+0. Introduction
+
+--> Generators --> A type of Iterator
+
+--> Generator functions
++ generator factory
++ return a generator when called
++ not a generator themselves
+
+--> Generator expressions
++ uses comprehension syntax
++ a more concise way of creating generators
+
+1. Yielding and Generator Functions
+
+--> yield
++ emits a value
++ the function is effectively suspended (but it retains its current state)
++ calling next on the function resumes running the function \
+right after the yield statement
++ if function returns something instead of yielding (finishes running) \
+--> StopIteration exception
+
+--> Generators
++ In fact, Generators are Iterators
++ Implement Iterator Protocol --> __iter__ and __next__
++ Generators are exhausted when function returns a value
+  StopIteration exception
+  return value is in the exception message
+
+--> Generator functions are functions which contain at least one yield statement
+--> When a Generator function is called, Python creates a Generator object
+--> Generators implement the Iterator Protocol
+--> Generators are inherently lazy Iterators (and can be infinite)
+--> Generators are Iterators, and can be used in the same way (for loops, comprehensions, etc)
+--> Generators become exhausted once the function returns a value
+
+2. Fibonacci Sequence Example
+
+3. Making an Iterable from a Generator
+
+4. Card Deck Example
+
+5. Generator Expressions and Performance
+
+6. Yield From
+
+*** Point to note
+--> 3 ways: Iterator, iter(callable, sentinel), Generator
+--> Iterable from Generator
+--> Generator Expression --> ()
+--> Yield From
