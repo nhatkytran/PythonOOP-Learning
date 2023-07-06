@@ -1,0 +1,193 @@
+1. Introduction
+
+Context --> The state surrounding a section of code
+
+When Error happenns, the file remains open
+
+---
+f = open('test.txt', 'r')
+try:
+  perform_work(f)
+finally:
+  f.close()
+---
+
+Writing try finally block every time is cumbersome
+
+--> Context Managers
++ create a context
++ execute code
++ automatically clean up the context
+--> Enter --> Work within --> Exit
+
+Pattern: On entry & On exit
+
+2. Context Managers
+
+with open(file_name) as f: <-- Enter the context
+  # file is now open
+                           <-- Exit the context
+# file is now closed
+
+--> The Context Management Protocol
+Classes implement the Context Management Protocol by \
+implementing 2 methods
+__enter__ --> setup, and optionally return some object
+__exit__ --> tear down / clean up
+
+---
+with CtxManager() as obj:
+  # do something
+# done with context
+
+mgr = CtxManager()
+obj = mgr.__enter__()
+try:
+  # do something
+finally:
+  # done with context
+  mgr.__exit__()
+---
+
+--> Scope of with block
+is in the same scope as the with statement itself
+
+__exit__ --> If an exception occurred
+--> know about any exceptions that occurred
+--> tell Python whether to silence the exception, or let it propagate
+
+3. Caveat when used with Lazy Iterators
+
+4. Not just a Context Manager
+
+Iterator Protocol + Context Manager Protocol
+__iter__, __next__ + __enter__, __exit__
+
+import decimal
+decimal.getcontext().prec = 14
+decimal.getcontext().prec = 28
+
+5. Generators and Context Managers
+
+Mimic Pattern using a Genrator
+---
+def open_file(fname, mode):
+  f = open(fname, mode)
+  try:
+    yield f
+  finally:
+    f.close()
+
+ctx = open_file('file.txt', 'r')
+f = next(ctx) # opens file, yields it
+next(ctx) # closes file --> StopIteration Exception
+
+ctx = open_file('file.txt', 'r')
+f = next(ctx)
+try:
+  # do work with file
+finally:
+  try:
+    next(ctx)
+  except StopIteration:
+    pass
+---
+
+6. The contextmanager Decorator
+
+---
+def contextmanager_dec(gen_fn):
+  def inner(*args, **kwargs):
+    gen = gen_fn(*args, **kwargs)
+    return GenContextManager(gen)
+  return inner
+
+@contextmanager_dec
+def open_file(f_name):
+  f = open(f_name)
+  try:
+    yield f
+  finally:
+    f.close()
+
+with open_file(f_name)...
+---
+
+7. Nested Context Managers
+
+with open(file1) as f1, open(file2) as f2:
+  pass
+
+*** Point to note
+--> Enter - Work - Exit --> Pattern: On Entry and On Exit
+--> The Context Management Protocol --> __enter__ and __exit__
+
+---
+with CtxManager() as obj:
+  # do something
+# done with context
+
+mgr = CtxManager()
+obj = mgr.__enter__()
+try:
+  # do something
+finally:
+  # done with context
+  mgr.__exit__()
+---
+
+Scope of Context Manager: Same scope as `with`
+
+--> as obj --> the return of mgr.__enter__()
+--> __exit__(exc_type, exc_value, exc_trace)
+exc_type, exc_value, exc_trace --> None if there is no error
+--> return True | False
++ True --> Silence any raised exception
++ False --> Do not silence a raised exception
+--> `with` statement --> Default --> False
+
+--> Caveat when used with Lazy Iterators
+
+Iterator Protocol + Context Manager Protocol
+__iter__, __next__ + __enter__, __exit__
+
+Creating a Context Manager from a Generator Function
+---
+def open_file(fname, mode):
+  f = open(fname, mode)
+  try:
+    yield f
+  finally:
+    f.close()
+
+class GenContext:
+  def __init__(self, gen):
+    self.gen = gen
+  def __enter__(self):
+    obj = next(self.gen)
+    return obj
+  def __exit__(self, *_):
+    next(self.gen)
+    return False
+
+gen = open_file('test.txt', 'w')
+with GenContext(gen) as f:
+  # do work
+---
+
+--> Genrator is Iterator --> StopIteration
+
+Context Manager and Decorator
+from contextlib import contextmanager
+@contextmanager
+def open_file(fname, mode='r'):
+    file = open(fname, mode)
+    try:
+        yield # Enter
+    finally:
+        # Exit --> Do cleanup
+
+Nested Context Managers
+enters = []
+exits = []
+--> This approach is used when we don't know eaxctly the number of files
